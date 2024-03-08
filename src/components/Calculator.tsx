@@ -102,12 +102,12 @@ const Calculator: React.FC = () => {
         backgroundColor: '#242530',
         width: '100%',
         maxWidth: 375,
-        height: '812px',
+        height: 812,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'flex-end',
-        mx: 'auto',
-        mt: 10,
+        boxShadow: 'rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px',
+        borderRadius: 5,
       }}
       onKeyDown={handleKeyDown}
     >
