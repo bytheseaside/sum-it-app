@@ -34,9 +34,30 @@ const Display: React.FC<Props> = ({ result, calculation, handleClickOnHistory, s
         p: 1,
       }}
     >
-      <Box sx={{ borderRadius: '50%', width: 12, height: 12, backgroundColor: '#fe5f57' }} />
-      <Box sx={{ borderRadius: '50%', width: 12, height: 12, backgroundColor: '#ffbc2e' }} />
-      <Box sx={{ borderRadius: '50%', width: 12, height: 12, backgroundColor: '#27c83e' }} />
+      <Box
+        sx={{
+          borderRadius: '50%',
+          width: 12,
+          height: 12,
+          backgroundColor: '#fe5f57'
+        }}
+      />
+      <Box
+        sx={{
+          borderRadius: '50%',
+          width: 12,
+          height: 12,
+          backgroundColor: '#ffbc2e'
+        }}
+      />
+      <Box
+        sx={{
+          borderRadius: '50%',
+          width: 12,
+          height: 12,
+          backgroundColor: '#27c83e'
+        }}
+      />
     </Box>
     <Box
       sx={{
