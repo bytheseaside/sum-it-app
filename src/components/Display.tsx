@@ -3,7 +3,6 @@ import React from "react";
 import Box from "@mui/material/Box";
 import { SxProps, Theme } from '@mui/material/styles';
 
-
 type Props = {
   result: string;
   calculation: string;
@@ -46,6 +45,6 @@ const Display: React.FC<Props> = ({ result, calculation, handleClickOnHistory, s
       {result}
     </Box>
   </Box>
-) 
+)
 
 export default Display;

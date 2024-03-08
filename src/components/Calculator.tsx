@@ -5,6 +5,9 @@ import Keyboard from './Keyboard.tsx';
 
 import Box from '@mui/material/Box';
 
+type Operators = '+' | '-' | '*' | '/';
+
+type HandleClickOn<T> = (value: T) => void;
 
 const Calculator: React.FC = () => {
   // operations should be first shown on 'result' paragraph and then when equals is clicked,
@@ -13,36 +16,58 @@ const Calculator: React.FC = () => {
   const [history, setHistory] = useState('');
   const [reseted, setReseted] = useState(true);
   const [lastKeyWasEquals, setLastKeyWasEquals] = useState(false);
-  /* @ts-expect-error because i want to test it */
-  const handleClickOnNumber = (number) => {
+
+  const handleClickOnNumber: HandleClickOn<number> = (number: number) => {
     const stringifyedNum = number.toString();
     setResult(lastKeyWasEquals ? stringifyedNum : result + stringifyedNum);
     setLastKeyWasEquals(false);
   };
 
-  const handleClickOnClear = () => {
+  const handleClickOnClear: HandleClickOn<void> = () => {
     setResult('');
     setHistory('');
     setReseted(true);
     setLastKeyWasEquals(false);
   };
 
-  const handleClickOnEquals = () => {
+  const handleClickOnEquals: HandleClickOn<void> = () => {
     setHistory(result);
     setResult(eval(result));
     setReseted(false);
     setLastKeyWasEquals(true);
   };
-  /* @ts-expect-error because i want to test it */
-  const handleClickOnOperator = (operator) => {
-    let lastChar = history.split('');
-    lastChar = lastChar[lastChar.length - 1];
 
-    //cant start with division or multiplication operator (tough it is possible in to start with a negative number for example)
+  const handleClickOnOperator: HandleClickOn<Operators> = (operator: Operators) => {
+    if (reseted && operator !== '-') {
+      return;
+    }
+    const splitHistory = history.split('');
+    const lastChar = splitHistory[splitHistory.length - 1];
+    const secondLastChar = splitHistory[splitHistory.length - 2];
+    // console.log('splitHistory', history);
+    // console.log('lastChar', lastChar);
+    // console.log('secondLastChar', secondLastChar);
+
+    // can't start with division or multiplication operator
+    // tough it is possible in to start with a negative number
     if (result === '' && (operator === '/' || operator === '*')) return;
 
-    //cant have two / or * operators in a row (but *-3 is ok for example)
-    if ((lastChar === '/' || lastChar === '*') && (operator === '/' || operator === '*')) return;
+    // can't have two / or * operators in a row, or +/ or -/ or +* or -*
+    // but *- or /- or *+ or /+ is ok
+    if (
+      (lastChar === '/' || lastChar === '*') && (operator === '/' || operator === '*')
+      || ((lastChar === '-' || lastChar === '+') && (operator === '/' || operator === '*'))
+    ) {
+      console.log('returning2');
+      return
+    }
+
+    // don't want to chain lots of minus or plus, just 2 at most
+    if ((lastChar === '+' || (lastChar === '-'))
+      && (secondLastChar === '+' || (secondLastChar === '-'))
+    ) {
+      return;
+    }
 
     setResult(result + operator);
     setLastKeyWasEquals(false);
@@ -51,18 +76,15 @@ const Calculator: React.FC = () => {
   const handleClickOnPercent = () => {
     // % cant be the first character or after an operator
     let lastChar = result.toString().split('');
+    // @ts-expect-error because i want to test it
     lastChar = lastChar[lastChar.length - 1];
 
     if (
       result === '' ||
-      lastChar === '/' ||
-      lastChar === '*' ||
-      lastChar === '+' ||
-      lastChar === '-' ||
-      lastChar === '%'
+      // @ts-expect-error because i want to test it
+      lastChar === '/' || lastChar === '*' || lastChar === '+' || lastChar === '-' || lastChar === '%'
     )
       return;
-    setResult(result + '%');
   };
 
   const handleClickOnDelete = () => {
@@ -121,9 +143,11 @@ const Calculator: React.FC = () => {
         }}
       />
       <Keyboard
+        // @ts-expect-error because i want to test it
         handleClickOnNumber={handleClickOnNumber}
         handleClickOnClear={handleClickOnClear}
         handleClickOnEquals={handleClickOnEquals}
+        // @ts-expect-error because i want to test it
         handleClickOnOperator={handleClickOnOperator}
         handleClickOnDelete={handleClickOnDelete}
         handleClickOnPercent={handleClickOnPercent}
