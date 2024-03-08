@@ -6,13 +6,11 @@ import minusIcon from '../assets/minus.svg';
 import plusIcon from '../assets/plus.svg';
 import equalsIcon from '../assets/equals.svg';
 import deleteIcon from '../assets/delete.svg';
+import Key from './Key';
 
 import Box from '@mui/material/Box';
 
-import Key from './Key';
-
 const BUTTON_UNIT_SIZE = 93.75;
-
 
 /* Sx */
 const numberSx = {

@@ -17,7 +17,7 @@ const Calculator: React.FC = () => {
   const [reseted, setReseted] = useState(true);
   const [lastKeyWasEquals, setLastKeyWasEquals] = useState(false);
 
-  const handleClickOnNumber: HandleClickOn<number> = (number: number) => {
+  const handleClickOnNumber: HandleClickOn<number> = (number) => {
     const stringifyedNum = number.toString();
     setResult(lastKeyWasEquals ? stringifyedNum : result + stringifyedNum);
     setLastKeyWasEquals(false);
@@ -38,81 +38,72 @@ const Calculator: React.FC = () => {
   };
 
   const handleClickOnOperator: HandleClickOn<Operators> = (operator: Operators) => {
-    if (reseted && operator !== '-') {
-      return;
-    }
     const splitHistory = history.split('');
     const lastChar = splitHistory[splitHistory.length - 1];
-    const secondLastChar = splitHistory[splitHistory.length - 2];
-    // console.log('splitHistory', history);
-    // console.log('lastChar', lastChar);
-    // console.log('secondLastChar', secondLastChar);
 
-    // can't start with division or multiplication operator
-    // tough it is possible in to start with a negative number
+    //cant start with division or multiplication operator (tough it is possible in to start with a negative number for example)
     if (result === '' && (operator === '/' || operator === '*')) return;
 
-    // can't have two / or * operators in a row, or +/ or -/ or +* or -*
-    // but *- or /- or *+ or /+ is ok
-    if (
-      (lastChar === '/' || lastChar === '*') && (operator === '/' || operator === '*')
-      || ((lastChar === '-' || lastChar === '+') && (operator === '/' || operator === '*'))
-    ) {
-      console.log('returning2');
-      return
-    }
-
-    // don't want to chain lots of minus or plus, just 2 at most
-    if ((lastChar === '+' || (lastChar === '-'))
-      && (secondLastChar === '+' || (secondLastChar === '-'))
-    ) {
-      return;
-    }
+    //cant have two / or * operators in a row (but *-3 is ok for example)
+    if ((lastChar === '/' || lastChar === '*') && (operator === '/' || operator === '*')) return;
 
     setResult(result + operator);
     setLastKeyWasEquals(false);
   };
 
-  const handleClickOnPercent = () => {
+  const handleClickOnPercent: HandleClickOn<void> = () => {
     // % cant be the first character or after an operator
-    let lastChar = result.toString().split('');
-    // @ts-expect-error because i want to test it
-    lastChar = lastChar[lastChar.length - 1];
+    const splitResult = result.toString().split('');
+    const lastChar = splitResult[splitResult.length - 1];
 
     if (
       result === '' ||
-      // @ts-expect-error because i want to test it
-      lastChar === '/' || lastChar === '*' || lastChar === '+' || lastChar === '-' || lastChar === '%'
-    )
+      lastChar === '/' ||
+      lastChar === '*' ||
+      lastChar === '+' ||
+      lastChar === '-' ||
+      lastChar === '%'
+    ) {
       return;
+    }
+
+    setResult(result + '%');
   };
 
-  const handleClickOnDelete = () => {
+  const handleClickOnDelete: HandleClickOn<void> = () => {
     let newResult = result.toString().split('');
     newResult = newResult.slice(0, -1);
     setResult(newResult.join(''));
     setLastKeyWasEquals(false);
   };
-  /* @ts-expect-error because i want to test it */
-  const handleKeyDown = (event) => {
-    event.preventDefault();
 
+  const handleKeyDown: HandleClickOn<React.SyntheticEvent> = (event) => {
+    event.preventDefault();
+    // @ts-expect-error will be fixed later
     const keyIsNumber = event.key >= 0 && event.key <= 9;
+    // @ts-expect-error will be fixed later
     if (keyIsNumber || event.key === '.') {
+      // @ts-expect-error will be fixed later
       handleClickOnNumber(event.key);
     }
+    // @ts-expect-error will be fixed later
     if (event.key === 'Enter' || event.key === '=') {
       handleClickOnEquals();
     }
+    // @ts-expect-error will be fixed later
     if (event.key === 'Backspace') {
       handleClickOnDelete();
     }
+    // @ts-expect-error will be fixed later
     if (event.key === 'Escape' || event.key === 'c') {
       handleClickOnClear();
     }
+    // @ts-expect-error will be fixed later
     if (event.key === '+' || event.key === '-' || event.key === '*' || event.key === '/') {
+      // @ts-expect-error will be fixed later
       handleClickOnOperator(event.key);
     }
+    // @ts-expect-error will be fixed later
     if (event.key === '%') {
       handleClickOnPercent();
     }
@@ -135,7 +126,7 @@ const Calculator: React.FC = () => {
     >
       <Display
         result={result}
-        /* @ts-expect-error because i want to test it */
+        // @ts-expect-error will be fixed later
         calculation={reseted ? null : history}
         handleClickOnHistory={() => {
           setResult(history);
@@ -143,11 +134,11 @@ const Calculator: React.FC = () => {
         }}
       />
       <Keyboard
-        // @ts-expect-error because i want to test it
+        // @ts-expect-error will be fixed later
         handleClickOnNumber={handleClickOnNumber}
         handleClickOnClear={handleClickOnClear}
         handleClickOnEquals={handleClickOnEquals}
-        // @ts-expect-error because i want to test it
+        // @ts-expect-error will be fixed later
         handleClickOnOperator={handleClickOnOperator}
         handleClickOnDelete={handleClickOnDelete}
         handleClickOnPercent={handleClickOnPercent}
