@@ -14,24 +14,29 @@ type AllKeys = Numeric | Operators | Specials | Percent;
 
 
 const Calculator: React.FC = () => {
-  const [result, setResult] = useState('');
-  const [history, setHistory] = useState('');
+  const [result, setResult] = useState<string>('');
+  const [history, setHistory] = useState<string>('');
 
   const modifyOperation: (value: AllKeys) => void = (value: AllKeys) => {
-    // DELETE cases
+    console.log(`value: ${value}`);
+    // DEL & C keys cases
     if (value === 'C') {
       setResult('');
       setHistory('');
       return
     } else if (value === 'DEL') {
-      setResult(result.slice(0, -1));
+      const resultToDisplay = result.slice(0, -1);
+      if (resultToDisplay === '') {
+        setHistory('');
+      }
+      setResult(resultToDisplay);
       return
     }
 
-    // EQUALS case
+    // EQUALS key case
     if (value === '=') {
       try {
-        const resultToDisplay = eval(result);
+        const resultToDisplay = eval(result).toString();
         setHistory(result);
         setResult(resultToDisplay);
       } catch {
@@ -41,19 +46,50 @@ const Calculator: React.FC = () => {
       return;
     }
 
-    // NUMBERS case
-    // iof value is a number or a  .
-    if (!isNaN(parseInt(value)) || value === '.') {
+    // NUMBERIC keys cases
+    if (!isNaN(parseInt(value)) || (value === '.' && !isNaN(parseInt(result.slice(-1))))) {
       setResult(result + value);
       return;
     }
 
+    // OPERATORS keys cases
+    if (value === '+' || value === '-' || value === '*' || value === '/') {
+      const lastChar = result.slice(-1);
+
+      if (
+        (result === '' && value === '-') ||
+        (!isNaN(parseInt(lastChar)) && value !== '-') ||
+        (['+', '*', '/'].includes(lastChar) && value === '-')
+      ) {
+        setResult(result + value);
+      }
+      return;
+    }
+
+    // PERCENT key case
+    if (value === '%') {
+      const lastChar = result.slice(-1);
+      if (!isNaN(parseInt(lastChar))) {
+        let startIndex = result.length - 1;
+        while (startIndex >= 0 && !isNaN(parseInt(result[startIndex]))) {
+          startIndex--;
+        }
+        const wholeNumber = parseFloat(result.slice(startIndex + 1));
+
+        // Calculate the percentage value
+        const percentage = wholeNumber / 100;
+
+        // Replace the old number with the new percentage value
+        const newResult = result.slice(0, startIndex + 1) + percentage.toString();
+        setResult(newResult);
+      }
+      return;
+    }
   };
 
   const handleClickOnKeyboard: React.MouseEventHandler<HTMLButtonElement> = (event) => {
     modifyOperation(event.currentTarget.value as AllKeys);
   };
-
 
   return (
     <Box
