@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 
 import divideIcon from '../assets/divide.svg';
 import multiplyIcon from '../assets/multiply.svg';
@@ -61,17 +61,8 @@ type Props = {
 };
 
 const Keyboard: React.FC<Props> = ({ handleClickOnKeyboard }) => {
-  const focusRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (focusRef.current) {
-      focusRef.current.focus();
-    }
-  }, []);
-
   return (
     <Box
-      ref={focusRef}
       sx={{
         display: 'grid',
         width: '100%',
