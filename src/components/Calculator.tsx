@@ -18,7 +18,6 @@ const Calculator: React.FC = () => {
   const [history, setHistory] = useState<string>('');
 
   const modifyOperation: (value: AllKeys) => void = (value: AllKeys) => {
-    console.log(`value: ${value}`);
     // DEL & C keys cases
     if (value === 'C') {
       setResult('');
