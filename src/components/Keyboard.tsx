@@ -102,7 +102,7 @@ const Keyboard: React.FC<Props> = ({ handleClickOnKeyboard }) => {
         .
       </Key>
       <Key
-        value="÷"
+        value="/"
         key="divide"
         sx={{ ...operatorSx, gridArea: 'button-operator-divide' }}
         onClick={handleClickOnKeyboard}
