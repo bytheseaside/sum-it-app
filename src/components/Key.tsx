@@ -5,8 +5,8 @@ import { SxProps, Theme } from '@mui/material/styles';
 
 type Props = {
   children: React.ReactNode;
-  value: string;
-  onClick?: () => void;
+  value: string | number;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   sx?: SxProps<Theme>;
 };
 
