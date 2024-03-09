@@ -5,13 +5,11 @@ import Keyboard from './Keyboard.tsx';
 
 import Box from '@mui/material/Box';
 
-
 type Numeric = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '.';
 type Operators = '+' | '-' | '*' | '/';
 type Specials = 'C' | 'DEL' | '=';
 type Percent = '%';
 type AllKeys = Numeric | Operators | Specials | Percent;
-
 
 const Calculator: React.FC = () => {
   const [result, setResult] = useState<string>('');
@@ -50,7 +48,6 @@ const Calculator: React.FC = () => {
       }
       return;
     }
-
 
     // NUMBERIC keys cases
     if (!isNaN(parseInt(value)) || (value === '.' && !isNaN(parseInt(result.slice(-1))))) {
