@@ -70,15 +70,13 @@ const Calculator: React.FC = () => {
       const lastChar = result.slice(-1);
       if (!isNaN(parseInt(lastChar))) {
         let startIndex = result.length - 1;
-        while (startIndex >= 0 && !isNaN(parseInt(result[startIndex]))) {
+        while (startIndex >= 0 && (!isNaN(parseInt(result[startIndex])) || result[startIndex] === '.')) {
           startIndex--;
         }
         const wholeNumber = parseFloat(result.slice(startIndex + 1));
 
-        // Calculate the percentage value
-        const percentage = wholeNumber / 100;
+        const percentage = (wholeNumber / 100).toFixed(3);
 
-        // Replace the old number with the new percentage value
         const newResult = result.slice(0, startIndex + 1) + percentage.toString();
         setResult(newResult);
       }
