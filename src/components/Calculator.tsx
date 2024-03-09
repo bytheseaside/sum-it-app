@@ -35,15 +35,22 @@ const Calculator: React.FC = () => {
     // EQUALS key case
     if (value === '=') {
       try {
-        const resultToDisplay = eval(result).toString();
-        setHistory(result);
-        setResult(resultToDisplay);
+        const evalResult = eval(result);
+        if (!isFinite(evalResult)) {
+          setResult('Math Error');
+          setHistory('');
+        } else {
+          const resultToDisplay = evalResult.toString();
+          setHistory(result);
+          setResult(resultToDisplay);
+        }
       } catch {
         setResult('Math Error');
         setHistory('');
       }
       return;
     }
+
 
     // NUMBERIC keys cases
     if (!isNaN(parseInt(value)) || (value === '.' && !isNaN(parseInt(result.slice(-1))))) {
