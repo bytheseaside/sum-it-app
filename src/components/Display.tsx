@@ -6,7 +6,7 @@ import { SxProps, Theme } from '@mui/material/styles';
 type Props = {
   result: string;
   calculation: string;
-  handleClickOnHistory: () => void;
+  handleClickOnHistory?: () => void;
   sx?: SxProps<Theme>;
 };
 
@@ -21,6 +21,7 @@ const Display: React.FC<Props> = ({ result, calculation, handleClickOnHistory, s
         justifyContent: 'space-between',
         width: '100%',
         height: '100%',
+        overflow: 'hidden',
         color: '#fff',
       },
       ...(Array.isArray(sx) ? sx : [sx]),
@@ -31,7 +32,7 @@ const Display: React.FC<Props> = ({ result, calculation, handleClickOnHistory, s
         width: '100%',
         display: 'flex',
         gap: 1,
-        p: 1,
+        p: '12px',
       }}
     >
       <Box
@@ -61,14 +62,16 @@ const Display: React.FC<Props> = ({ result, calculation, handleClickOnHistory, s
     </Box>
     <Box
       sx={{
-        m: '20px',
+        p: '20px',
+        maxWidth: 375,
+        overflow: 'hidden',
+        textAlign: 'right',
       }}
     >
       <Box
         sx={{
           fontSize: '26px',
           minHeight: '39px',
-          textAlign: 'right',
         }}
         onClick={handleClickOnHistory}
       >

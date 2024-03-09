@@ -57,31 +57,20 @@ const deleteSx = {
 };
 
 type Props = {
-  handleClickOnNumber: (value: number | string) => void;
-  handleClickOnClear: () => void;
-  handleClickOnEquals: () => void;
-  handleClickOnOperator: (value: string) => void;
-  handleClickOnDelete: () => void;
-  handleClickOnPercent: () => void;
+  handleClickOnKeyboard: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
-const Keyboard: React.FC<Props> = ({
-  handleClickOnNumber,
-  handleClickOnClear,
-  handleClickOnEquals,
-  handleClickOnOperator,
-  handleClickOnDelete,
-  handleClickOnPercent
-}) => (
-  <Box
-    sx={{
-      display: 'grid',
-      width: '100%',
-      height: 'calc(BUTTON_UNIT_SIZEpx * 5)',
-      minWidth: 320,
-      maxWidth: 375,
-      gap: 0,
-      gridTemplate: `
+const Keyboard: React.FC<Props> = ({ handleClickOnKeyboard }) => {
+  return (
+    <Box
+      sx={{
+        display: 'grid',
+        width: '100%',
+        height: 'calc(BUTTON_UNIT_SIZEpx * 5)',
+        minWidth: 320,
+        maxWidth: 375,
+        gap: 0,
+        gridTemplate: `
         'button-clear button-operator-divide button-operator-multiply button-delete'
         'button-number-7 button-number-8 button-number-9 button-operator-minus'
         'button-number-4 button-number-5 button-number-6 button-operator-plus'
@@ -89,94 +78,95 @@ const Keyboard: React.FC<Props> = ({
         'button-percent button-number-0 button-dot button-equals'
         / 1fr 1fr 1fr 1fr
       `,
-    }}
-  >
-    {Array.from({ length: 10 }, (_, index) => index)
-      .map((value) =>
-        <Key
-          value={value.toString()}
-          sx={{ ...numberSx, gridArea: `button-number-${value}` }}
-          key={value}
-          onClick={() => handleClickOnNumber(value)}
-        >
-          {value}
-        </Key>
-      )
-    }
-    {/* OPERATORS BUTTONS */}
-    <Key
-      value="."
-      key="dot"
-      sx={{ ...numberSx, gridArea: 'button-dot' }}
-      onClick={() => handleClickOnNumber('.')}
+      }}
     >
-      .
-    </Key>
-    <Key
-      value="÷"
-      key="divide"
-      sx={{ ...operatorSx, gridArea: 'button-operator-divide' }}
-      onClick={() => handleClickOnOperator('/')}
-    >
-      <Box component="img" src={divideIcon} alt="Divide symbol" />
-    </Key>
-    <Key
-      value="x"
-      key="multiply"
-      sx={{ ...operatorSx, gridArea: 'button-operator-multiply' }}
-      onClick={() => handleClickOnOperator('*')}
-    >
-      <Box component="img" src={multiplyIcon} alt="Multiply symbol" />
-    </Key>
-    <Key
-      value="-"
-      key="minus"
-      sx={{ ...operatorSx, gridArea: 'button-operator-minus' }}
-      onClick={() => handleClickOnOperator('-')}
-    >
-      <Box component="img" src={minusIcon} alt="Minus symbol" />
-    </Key>
-    <Key
-      value="+"
-      key="plus"
-      sx={{ ...operatorSx, gridArea: 'button-operator-plus' }}
-      onClick={() => handleClickOnOperator('+')}
-    >
-      <Box component="img" src={plusIcon} alt="Plus symbol" />
-    </Key>
-    <Key
-      value="="
-      key="equals"
-      sx={{ ...equalsSx, gridArea: 'button-equals' }}
-      onClick={handleClickOnEquals}
-    >
-      <Box component="img" src={equalsIcon} alt="Equals symbol" />
-    </Key>
-    <Key
-      value="C"
-      key="clear"
-      sx={{ ...clearSx, gridArea: 'button-clear' }}
-      onClick={handleClickOnClear}
-    >
-      c
-    </Key>
-    <Key
-      value="DEL"
-      key="delete"
-      sx={{ ...deleteSx, gridArea: 'button-delete' }}
-      onClick={() => handleClickOnDelete()}
-    >
-      <Box component="img" src={deleteIcon} alt="Delete symbol" />
-    </Key>
-    <Key
-      value="%"
-      key="percent"
-      sx={{ ...numberSx, gridArea: 'button-percent' }}
-      onClick={() => handleClickOnPercent()}
-    >
-      %
-    </Key>
-  </Box>
-);
+      {Array.from({ length: 10 }, (_, index) => index)
+        .map((value) =>
+          <Key
+            value={value}
+            sx={{ ...numberSx, gridArea: `button-number-${value}` }}
+            key={value}
+            onClick={handleClickOnKeyboard}
+          >
+            {value}
+          </Key>
+        )
+      }
+      {/* OPERATORS BUTTONS */}
+      <Key
+        value="."
+        key="dot"
+        sx={{ ...numberSx, gridArea: 'button-dot' }}
+        onClick={handleClickOnKeyboard}
+      >
+        .
+      </Key>
+      <Key
+        value="/"
+        key="divide"
+        sx={{ ...operatorSx, gridArea: 'button-operator-divide' }}
+        onClick={handleClickOnKeyboard}
+      >
+        <Box component="img" src={divideIcon} alt="Divide symbol" />
+      </Key>
+      <Key
+        value="*"
+        key="multiply"
+        sx={{ ...operatorSx, gridArea: 'button-operator-multiply' }}
+        onClick={handleClickOnKeyboard}
+      >
+        <Box component="img" src={multiplyIcon} alt="Multiply symbol" />
+      </Key>
+      <Key
+        value="-"
+        key="minus"
+        sx={{ ...operatorSx, gridArea: 'button-operator-minus' }}
+        onClick={handleClickOnKeyboard}
+      >
+        <Box component="img" src={minusIcon} alt="Minus symbol" />
+      </Key>
+      <Key
+        value="+"
+        key="plus"
+        sx={{ ...operatorSx, gridArea: 'button-operator-plus' }}
+        onClick={handleClickOnKeyboard}
+      >
+        <Box component="img" src={plusIcon} alt="Plus symbol" />
+      </Key>
+      <Key
+        value="="
+        key="equals"
+        sx={{ ...equalsSx, gridArea: 'button-equals' }}
+        onClick={handleClickOnKeyboard}
+      >
+        <Box component="img" src={equalsIcon} alt="Equals symbol" />
+      </Key>
+      <Key
+        value="C"
+        key="clear"
+        sx={{ ...clearSx, gridArea: 'button-clear' }}
+        onClick={handleClickOnKeyboard}
+      >
+        c
+      </Key>
+      <Key
+        value="DEL"
+        key="delete"
+        sx={{ ...deleteSx, gridArea: 'button-delete' }}
+        onClick={handleClickOnKeyboard}
+      >
+        <Box component="img" src={deleteIcon} alt="Delete symbol" />
+      </Key>
+      <Key
+        value="%"
+        key="percent"
+        sx={{ ...numberSx, gridArea: 'button-percent' }}
+        onClick={handleClickOnKeyboard}
+      >
+        %
+      </Key>
+    </Box>
+  )
+};
 
 export default Keyboard;
