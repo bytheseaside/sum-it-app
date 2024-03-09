@@ -110,7 +110,7 @@ const Keyboard: React.FC<Props> = ({ handleClickOnKeyboard }) => {
         <Box component="img" src={divideIcon} alt="Divide symbol" />
       </Key>
       <Key
-        value="x"
+        value="*"
         key="multiply"
         sx={{ ...operatorSx, gridArea: 'button-operator-multiply' }}
         onClick={handleClickOnKeyboard}
