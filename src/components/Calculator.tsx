@@ -14,77 +14,87 @@ type AllKeys = Numeric | Operators | Specials | Percent;
 const Calculator: React.FC = () => {
   const [result, setResult] = useState<string>('');
   const [history, setHistory] = useState<string>('');
+  const [isMathError, setIsMathError] = useState<boolean>(false);
 
   const modifyOperation: (value: AllKeys) => void = (value: AllKeys) => {
-    // DEL & C keys cases
-    if (value === 'C') {
+    if (isMathError) {
       setResult('');
       setHistory('');
+      setIsMathError(false);
       return
-    } else if (value === 'DEL') {
-      const resultToDisplay = result.slice(0, -1);
-      if (resultToDisplay === '') {
+    } else {
+      // DEL & C keys cases
+      if (value === 'C') {
+        setResult('');
         setHistory('');
-      }
-      setResult(resultToDisplay);
-      return
-    }
-
-    // EQUALS key case
-    if (value === '=') {
-      try {
-        const evalResult = eval(result);
-        if (!isFinite(evalResult)) {
-          setResult('Math Error');
+        return
+      } else if (value === 'DEL') {
+        const resultToDisplay = result.slice(0, -1);
+        if (resultToDisplay === '') {
           setHistory('');
-        } else {
-          const resultToDisplay = evalResult.toString();
-          setHistory(result);
-          setResult(resultToDisplay);
         }
-      } catch {
-        setResult('Math Error');
-        setHistory('');
+        setResult(resultToDisplay);
+        return
       }
-      return;
-    }
 
-    // NUMBERIC keys cases
-    if (!isNaN(parseInt(value)) || (value === '.' && !isNaN(parseInt(result.slice(-1))))) {
-      setResult(result + value);
-      return;
-    }
+      // EQUALS key case
+      if (value === '=') {
+        try {
+          const evalResult = eval(result);
+          if (!isFinite(evalResult)) {
+            setResult('Math Error');
+            setIsMathError(true);
+            setHistory('');
+          } else {
+            const resultToDisplay = evalResult.toString();
+            setHistory(result);
+            setResult(resultToDisplay);
+          }
+        } catch {
+          setResult('Math Error');
+          setIsMathError(true);
+          setHistory('');
+        }
+        return;
+      }
 
-    // OPERATORS keys cases
-    if (value === '+' || value === '-' || value === '*' || value === '/') {
-      const lastChar = result.slice(-1);
-
-      if (
-        (result === '' && value === '-') ||
-        (!isNaN(parseInt(lastChar)) && value !== '-') ||
-        (['+', '*', '/'].includes(lastChar) && value === '-')
-      ) {
+      // NUMBERIC keys cases
+      if (!isNaN(parseInt(value)) || (value === '.' && !isNaN(parseInt(result.slice(-1))))) {
         setResult(result + value);
+        return;
       }
-      return;
-    }
 
-    // PERCENT key case
-    if (value === '%') {
-      const lastChar = result.slice(-1);
-      if (!isNaN(parseInt(lastChar))) {
-        let startIndex = result.length - 1;
-        while (startIndex >= 0 && (!isNaN(parseInt(result[startIndex])) || result[startIndex] === '.')) {
-          startIndex--;
+      // OPERATORS keys cases
+      if (value === '+' || value === '-' || value === '*' || value === '/') {
+        const lastChar = result.slice(-1);
+
+        if (
+          (result === '' && value === '-') ||
+          (!isNaN(parseInt(lastChar)) && value !== '-') ||
+          (['+', '*', '/'].includes(lastChar) && value === '-')
+        ) {
+          setResult(result + value);
         }
-        const wholeNumber = parseFloat(result.slice(startIndex + 1));
-
-        const percentage = (wholeNumber / 100).toFixed(3);
-
-        const newResult = result.slice(0, startIndex + 1) + percentage.toString();
-        setResult(newResult);
+        return;
       }
-      return;
+
+      // PERCENT key case
+      if (value === '%') {
+        const lastChar = result.slice(-1);
+        if (!isNaN(parseInt(lastChar))) {
+          let startIndex = result.length - 1;
+          while (startIndex >= 0 && (!isNaN(parseInt(result[startIndex])) || result[startIndex] === '.')) {
+            startIndex--;
+          }
+          const wholeNumber = parseFloat(result.slice(startIndex + 1));
+
+          const percentage = (wholeNumber / 100).toFixed(3);
+
+          const newResult = result.slice(0, startIndex + 1) + percentage.toString();
+          setResult(newResult);
+        }
+        return;
+      }
     }
   };
 
