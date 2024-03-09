@@ -6,7 +6,7 @@ import { SxProps, Theme } from '@mui/material/styles';
 type Props = {
   result: string;
   calculation: string;
-  handleClickOnHistory: () => void;
+  handleClickOnHistory?: () => void;
   sx?: SxProps<Theme>;
 };
 
